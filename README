@@ -1,1 +1,44 @@
+# Sitemap module
 
+Version 1.0
+Kimmy Chirnside
+kimmy.chirnside@gmail.com
+
+I welcome all feedback and suggestions regarding functionality, working or not.  Or
+suggestions of how it could work better.
+
+This module adds a basic sitemap for the site, as supported by google.  It finds all 
+pages that are considered 'public' in the CMS, so itself does not need authentication.  
+Currently this does not support the BCMS caching model.  I would like to include it 
+in the caching system shortly.
+The module has been designed to one day support more sitemap formats.  If there are
+any suggestions for other formats, please send me details and I'll attempt to include.
+I think this should be configurable via the static config file for this module.
+
+To install, download the source from github at http://github.com/k1mmeh/bcms_sitemap.
+Then inside the root directory of the downloaded source, run:
+  gem build bcms_sitemap.gemspec
+
+Then install the gem by running:
+  gem install bcms_sitemap-1.0.gem
+
+Now edit config/environment.rb and add the following line AFTER the inclusion of the
+browsercms gem:
+  config.gem 'bcms_sitemap', :version => '1.0'
+
+Then to install the files appropriately, run:
+  ruby script/generate browser_cms
+
+This will have copied a file to RAILS_ROOT/config/sitemap.yml.sample.  Copy this file
+to RAILS_ROOT/config/sitemap.yml and edit the only config variable 'root_path' to 
+reflect the address of your site.
+
+Now the sitemap should be accessible at <your_site>/sitemap.xml.  If you want the sitemap
+to appear at a different location, edit the routes file by adding the following lines to
+your routes file ABOVE the map.routes_for_browser_cms instruction:
+  
+  map.with_options(:controller => 'cms/sitemap') do |sm|
+    sm.foo_bar '<your_custom_path>', :action => 'google'
+  end
+
+Let me know if you think the url should be configurable.
